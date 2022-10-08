@@ -53,7 +53,7 @@ def get_manifest_data():
         console.print("Manifest Data in")
         console.print_json(json_data)
 
-        return data
+        return json_data
 
 
 def init_manifest():
