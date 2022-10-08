@@ -50,11 +50,8 @@ def get_manifest_data():
 
         json_data = json.load(json_file)
 
-        console.print(f"Manifest Data in : {json_data}")
-
-        data = jsonpickle.decode(json_data)
-        console.print("Data out:")
-        console.print_json(data)
+        console.print("Manifest Data in")
+        console.print_json(json_data)
 
         return data
 
