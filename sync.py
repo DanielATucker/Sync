@@ -71,7 +71,7 @@ def init_manifest():
         data = jsonpickle.decode(jsonpickle.encode(json_data))
 
         console.print("Here is your manifest:")
-        console.print(data)
+        console.print_json(data)
 
         return data
 
