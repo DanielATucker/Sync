@@ -53,7 +53,7 @@ def get_manifest_data():
         console.print(f"Manifest Data in : {json_data}")
 
         data = json.loads(json_data)
-        console.print(f"Data out: {data}")
+        console.print_json(f"Data out: {data}")
 
         return data
 
@@ -98,7 +98,7 @@ def init_manifest():
 
             data = get_manifest_data()
 
-            console.print(data)
+            console.print_json(data)
 
             return data
 
@@ -135,9 +135,9 @@ def compare_mans(data, to_compare):
     to_compare = jsonpickle.encode(to_compare)
 
     console.print("Data")
-    console.print(data)
+    console.print_json(data)
     console.print("To compare: ")
-    console.print(to_compare)
+    console.print_json(to_compare)
 
     
     diff = DeepDiff(data, to_compare)
@@ -148,7 +148,7 @@ def compare_mans(data, to_compare):
 
 
     console.print("Diff: ")
-    console.print(decoded_diff)
+    console.print_json(decoded_diff)
     
 
 
