@@ -52,7 +52,7 @@ def get_manifest_data():
 
         console.print(f"Manifest Data in : {json_data}")
 
-        data = json.loads(json_data)
+        data = jsonpickle.decode(json_data)
         console.print("Data out:")
         console.print_json(data)
 
