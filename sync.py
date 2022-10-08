@@ -53,7 +53,11 @@ def get_manifest_data():
         console.print("Manifest Data in")
         console.print_json(json_data)
 
-        return json_data
+        data = jsonpickle.encode(json_data)
+        console.print("Data out:")
+        console.print_json(data)
+
+        return data
 
 
 def init_manifest():
