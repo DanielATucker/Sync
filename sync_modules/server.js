@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
       }
     }
 
-    jobs[ip].clientResponses = Responses;
+    jobs[jobName].clientResponses = Responses;
 
     console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
 
