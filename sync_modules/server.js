@@ -23,7 +23,7 @@ io.on("pong", (socket_id) => {
   io.to("main").emit("message",`Socket ${socket_id} is up`);
 });
 
-let ping = () => {
+function ping() {
   io.to("main").emit("ping");
 };
 
