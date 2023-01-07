@@ -24,3 +24,5 @@ let ping = (socket) => {
 };
 
 io.listen(6200);
+
+console.log("Server online")
