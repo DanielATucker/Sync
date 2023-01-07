@@ -28,20 +28,18 @@ socket.on("job", (ticket) => {
 
     let fileName = ticket.file;
     
-    try {
-        if (fs.existsSync(fileName)) {
-            console.log(`${fileName} Found`)
+    if (fs.existsSync(fileName)) {
+        console.log(`${fileName} Found`)
 
-            ticket.clientResponses[ip.address()] = {
-                "hasUpdatedFile": true
-            };
+        ticket.clientResponses[ip.address()] = {
+            "hasUpdatedFile": true
+        };
 
-            ticket.lastModifiedBy = ip.address();
+        ticket.lastModifiedBy = ip.address();
 
-            socket.emit("initialResponse", ticket);
-        }
-    } catch(err) {
-        console.log(err);
+        socket.emit("initialResponse", ticket);
+    }
+    else {
         console.log(`${fileName} Not Found`);
 
         ticket.clientResponses[ip.address()] = {
@@ -51,7 +49,6 @@ socket.on("job", (ticket) => {
         ticket.lastModifiedBy = ip.address();
 
         socket.emit("initialResponse", ticket);
-
     }
 });
 
