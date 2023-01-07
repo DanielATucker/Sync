@@ -28,7 +28,7 @@ socket.on("job", (ticket, callback) => {
     
     try {
         if (fs.existsSync(fileName)) {
-            console.log(`${filename} Found`)
+            console.log(`${fileName} Found`)
 
             ticket.clientResponses[ip.address()] = {
                 "hasUpdatedFile": true
@@ -39,7 +39,7 @@ socket.on("job", (ticket, callback) => {
             callback(ticket);
         }
     } catch(err) {
-        console.log(`${filename} Not Found`);
+        console.log(`${fileName} Not Found`);
 
         ticket.clientResponses[ip.address()] = {
             "hasUpdatedFile": false
