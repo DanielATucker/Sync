@@ -10,6 +10,8 @@ const io = new Server({
     }
 });
 
+let clientList = [];
+
 io.on("connection", (socket) => {
   console.log(`${socket.id} Joined the queue`);
 
@@ -25,14 +27,20 @@ io.on("connection", (socket) => {
   ping(socket.id);
 
   socket.on("pong", (ip) => {
-    io.to("main").emit("message",`Socket ${ip} is up`);
+    io.to("main").emit("message",`Client ${ip} is up`);
+    addClient(ip);
   });
 });
 
 
-
 function ping() {
   io.to("main").emit("ping");
+};
+
+function addClient(ip) {
+  clientList.concat(ip);
+
+  console.log(`New Client list ${clientList}`);
 };
 
 
