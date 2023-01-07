@@ -24,7 +24,7 @@ socket.on("ping", () => {
 });
 
 socket.on("job", (ticket) => {
-    console.log(`Received Job: ${ticket}`);
+    console.log(`Received Job: ${JSON.stringify(ticket, null, 2)}`);
 
     let fileName = ticket.file;
     

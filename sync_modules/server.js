@@ -59,14 +59,14 @@ io.on("connection", (socket) => {
 
     console.log(`New Job:`);
 
-    console.log(`Ticket: ${JSON.stringify(newTicket)}`);
+    console.log(`Ticket: ${JSON.stringify(newTicket, null, 2)}`);
 
     io.to("main").emit("job", newTicket);
   });
 
   socket.on("initialResponse", (ticket) => {
     console.log(`New Ticket from ${ticket.lastModifiedBy}:`);
-    console.log(`Ticket: ${ticket}`);
+    console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
   });
 });
 
