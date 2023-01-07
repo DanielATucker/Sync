@@ -23,7 +23,7 @@ socket.on("ping", () => {
     socket.emit("pong", ip.address());  
 });
 
-socket.on("job", (ticket, response) => {
+socket.on("job", (ticket, callback) => {
     let fileName = ticket.file;
     
     try {
@@ -36,7 +36,7 @@ socket.on("job", (ticket, response) => {
 
             ticket.lastModifiedBy = ip.address();
 
-            response(ticket);
+            callback(ticket);
         }
     } catch(err) {
         console.log(`${filename} Not Found`);
@@ -45,7 +45,7 @@ socket.on("job", (ticket, response) => {
             "hasUpdatedFile": false
         };
 
-        response(ticket);
+        callback(ticket);
     }
 });
 

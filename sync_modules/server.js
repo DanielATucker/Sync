@@ -56,12 +56,12 @@ io.on("connection", (socket) => {
     };
 
     jobs[fileName] = newTicket;
-    
+
     console.log(`New Job`);
 
     io.to("main").emit("job", newTicket, (responseTicket) => {
       console.log(`New Ticket from ${responseTicket.lastModifiedBy}:`);
-      console.log(responseTicket);
+      console.log(`Ticket: ${responseTicket}`);
     });
   });
 });
@@ -74,7 +74,7 @@ function ping() {
 function addClient(ip) {
   clientList.push(ip);
 
-  console.log(`New Client list ${clientList}`);
+  console.log(`New Client list ${JSON.stringify(clientList, null, 2)}`);
 };
 
 
