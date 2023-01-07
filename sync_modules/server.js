@@ -57,9 +57,9 @@ io.on("connection", (socket) => {
 
     jobs[fileName] = newTicket;
 
-    console.log(`New Job`);
+    console.log(`New Job:`);
 
-    console.log(`Ticket: ${ticket}`);
+    console.log(`Ticket: ${JSON.stringify(newTicket)}`);
 
     io.to("main").emit("job", newTicket);
   });
