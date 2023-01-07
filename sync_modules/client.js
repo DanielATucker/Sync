@@ -1,3 +1,5 @@
+var ip = require('ip');
+
 import { io } from "socket.io-client";
 
 const socket = io("http://100.69.19.3:6200");
@@ -11,7 +13,7 @@ socket.on("message", (message) => {
 });
 
 socket.on("ping", () => {
-    socket.emit("pong", socket.id);  
+    socket.emit("pong", ip.address());  
 });
 
 socket.io.on("error", (error) => {

@@ -17,11 +17,11 @@ io.on("connection", (socket) => {
 
   io.to("main").emit("message", "New queue ping:");
 
-  
+
   ping(socket.id);
 
-  socket.on("pong", (socket_id) => {
-    io.to("main").emit("message",`Socket ${socket_id} is up`);
+  socket.on("pong", (ip) => {
+    io.to("main").emit("message",`Socket ${ip} is up`);
   });
 });
 
