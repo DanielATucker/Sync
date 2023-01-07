@@ -3,6 +3,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 import { Server } from "socket.io";
+import strftime from "strftime";
 
 const io = new Server({
     cors: {
@@ -11,6 +12,7 @@ const io = new Server({
 });
 
 let clientList = [];
+let jobs = {};
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} Joined the queue`);
@@ -28,7 +30,37 @@ io.on("connection", (socket) => {
 
   socket.on("pong", (ip) => {
     io.to("main").emit("message",`Client ${ip} is up`);
-    addClient(ip);
+
+    client = {
+      "client ip": ip,
+      "socket_id": socket.id
+    };
+
+    addClient(client);
+  });
+
+  socket.on("newJob", (fileName) => {
+    jobs[fileName] = newTicket = new ticket = {
+      "jobName": fileName,
+      "file": fileName.split('_')[0],
+      "createdTime": fileName.split('_')[1].split('_')[0],
+      "receivedTime": strftime("%y%m%d_%X"),
+      "startedSync": false,
+      "clientResponses": {},
+      "firstResult": null,
+      "secondResult": null,
+      "completed": false,
+      "completedTime": null,
+      "raiseError": null,
+      "lastModifiedBy": "Server"
+    };
+
+    console.log(`New Job`);
+
+    io.to("main").emit("job", newTicket, (responseTicket) => {
+      console.log(`New Ticket from ${responseTicket.lastModifiedBy}:`);
+      console.log(responseTicket);
+    });
   });
 });
 
