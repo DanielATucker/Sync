@@ -11,7 +11,7 @@ socket.on("message", (message) => {
 });
 
 socket.on("ping", () => {
-    socket.emit("pong");  
+    socket.emit("pong", socket.id);  
 });
 
 socket.io.on("error", (error) => {
