@@ -45,7 +45,7 @@ export default function Backup(socket) {
     queue(file, "Deleted");
   });
 
-  queue = (file, event) => {
+  let queue = (file, event) => {
     console.log(`Event ${JSON.stringify(Event, null, 2)}`);
 
     socket.emit("newJob", `${event}_${file}_${strftime("%y%m%d_%X")}`);
