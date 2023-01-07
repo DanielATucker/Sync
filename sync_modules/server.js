@@ -27,6 +27,10 @@ let ping = () => {
   io.to("main").emit("ping");
 };
 
+io.of("/admin").on("connection", (socket) => {
+  io.to("main").emit("message", "Welcome to Main");
+});
+
 io.listen(6200);
 
 console.log("Server online")
