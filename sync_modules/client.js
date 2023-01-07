@@ -1,3 +1,7 @@
+// Allow require
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 var ip = require('ip');
 
 import { io } from "socket.io-client";

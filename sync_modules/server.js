@@ -1,3 +1,7 @@
+// Allow require
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 import { Server } from "socket.io";
 
 const io = new Server({
