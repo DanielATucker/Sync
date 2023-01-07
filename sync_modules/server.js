@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 
     let Responses = jobs.clientResponses
 
-    Responses[ticket.lastModifiedBy] =
+    Responses[ip] =
     {
       ip :  {
         "hasUpdatedFile" : ticket.clientResponses.hasUpdatedFile
