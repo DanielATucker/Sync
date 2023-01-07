@@ -41,6 +41,7 @@ socket.on("job", (ticket) => {
             socket.emit("initialResponse", ticket);
         }
     } catch(err) {
+        console.log(err);
         console.log(`${fileName} Not Found`);
 
         ticket.clientResponses[ip.address()] = {
