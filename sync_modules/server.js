@@ -59,10 +59,12 @@ io.on("connection", (socket) => {
 
     console.log(`New Job`);
 
-    io.to("main").emit("job", newTicket, (responseTicket) => {
-      console.log(`New Ticket from ${responseTicket.lastModifiedBy}:`);
-      console.log(`Ticket: ${responseTicket}`);
-    });
+    io.to("main").emit("job", newTicket);
+  });
+
+  socket.on("initialResponse", (ticket) => {
+    console.log(`New Ticket from ${ticket.lastModifiedBy}:`);
+    console.log(`Ticket: ${ticket}`);
   });
 });
 
