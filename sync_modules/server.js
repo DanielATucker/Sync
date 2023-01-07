@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newJob", (fileName) => {
-    jobs[fileName] = newTicket = {
+    let newTicket = {
       "jobName": fileName,
       "file": fileName.split('_')[0],
       "createdTime": fileName.split('_')[1].split('_')[0],
@@ -55,6 +55,8 @@ io.on("connection", (socket) => {
       "lastModifiedBy": "Server"
     };
 
+    jobs[fileName] = newTicket;
+    
     console.log(`New Job`);
 
     io.to("main").emit("job", newTicket, (responseTicket) => {
