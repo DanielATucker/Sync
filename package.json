@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "All code from this tutorial as a complete package is available in [this repository](https://github.com/alexeagleson/template-node-backup-directory).  If you find this tutorial helpful, please share it with your friends and colleagues!",
   "main": "client.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
