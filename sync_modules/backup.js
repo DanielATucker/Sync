@@ -1,3 +1,7 @@
+// Allow require
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 require("dotenv").config();
 var strftime = require('strftime');
 var ip = require('ip');
