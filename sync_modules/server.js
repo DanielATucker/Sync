@@ -27,7 +27,7 @@ let ping = () => {
   io.to("main").emit("ping");
 };
 
-io.of("/main").on("connection", (socket) => {
+io.of("main").on("connection", (socket) => {
   io.to("main").emit("message", "Welcome to Main");
 });
 
