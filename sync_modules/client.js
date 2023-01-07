@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("100.69.19.3", {       
+const socket = io("100.69.19.3:6200", {       
 });
 
 
