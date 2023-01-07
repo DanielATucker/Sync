@@ -1,0 +1,25 @@
+{
+  "name": "sync",
+  "version": "1.0.0",
+  "description": "All code from this tutorial as a complete package is available in [this repository](https://github.com/alexeagleson/template-node-backup-directory).  If you find this tutorial helpful, please share it with your friends and colleagues!",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielATucker/Sync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanielATucker/Sync/issues"
+  },
+  "homepage": "https://github.com/DanielATucker/Sync#readme",
+  "dependencies": {
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4"
+  }
+}
