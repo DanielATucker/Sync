@@ -9,7 +9,11 @@ const io = new Server({
 io.on("connection", (socket) => {
   console.log(`${socket.id} Joined the queue`);
 
+  console.log(socket.rooms); // Set { <socket.id> }
+
   socket.join("main");
+
+  console.log(socket.rooms);
   
   socket.to("main").emit("message", `New queue ping:`);
   ping(socket);

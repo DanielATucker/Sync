@@ -7,7 +7,7 @@ socket.on("connect", () => {
 });
 
 socket.on("message", (message) => {
-    console.log(message)  
+    console.log(message);
 });
 
 socket.on("ping", () => {
