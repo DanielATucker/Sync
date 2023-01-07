@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newJob", (fileName) => {
-    jobs[fileName] = newTicket = new ticket = {
+    jobs[fileName] = newTicket = {
       "jobName": fileName,
       "file": fileName.split('_')[0],
       "createdTime": fileName.split('_')[1].split('_')[0],
