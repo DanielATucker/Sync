@@ -52,7 +52,6 @@ export default function Backup(socket) {
   };
 };
 
-
 /*
 job1 = new Rsync()
 .executable(syncProgram)
