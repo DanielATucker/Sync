@@ -16,14 +16,14 @@ io.on("connection", (socket) => {
   console.log(socket.rooms);
   
   io.to("main").emit("message", "New queue ping:");
-  ping(socket);
+  ping(socket.id);
 });
 
-io.on("pong", (socket) => {
-  io.to("main").emit("message",`Socket ${socket.id} is up`);
+io.on("pong", (socket_id) => {
+  io.to("main").emit("message",`Socket ${socket_id} is up`);
 });
 
-let ping = (socket) => {
+let ping = () => {
   io.to("main").emit("ping");
 };
 
