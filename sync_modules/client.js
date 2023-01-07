@@ -24,7 +24,7 @@ socket.on("ping", () => {
 });
 
 socket.on("job", (ticket, response) => {
-    fileName = ticket.file;
+    let fileName = ticket.file;
     
     try {
         if (fs.existsSync(fileName)) {
