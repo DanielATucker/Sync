@@ -15,8 +15,7 @@ const socket = io("http://100.69.19.3:6200");
 
 socket.on("connect", () => {
     console.log("Connected to server");
-    setTimeout(newJob, 3000);
-    
+        
     setTimeout(Backup(socket), 3000);
 
     console.log("Backup Started");
