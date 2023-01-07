@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
     let newTicket = {
       "jobName": fileName,
       "file": fileName.split('_')[0],
-      "createdTime": fileName.split('_')[1],
+      "createdTime": fileName.split('_')[2],
       "receivedTime": strftime("%y%m%d_%X"),
       "startedSync": false,
       "clientResponses": {},
@@ -52,7 +52,8 @@ io.on("connection", (socket) => {
       "completed": false,
       "completedTime": null,
       "raiseError": null,
-      "lastModifiedBy": "Server"
+      "lastModifiedBy": "Server",
+      "clientResponses": {}
     };
 
     jobs[fileName] = newTicket;
@@ -65,8 +66,26 @@ io.on("connection", (socket) => {
   });
 
   socket.on("initialResponse", (ticket) => {
-    console.log(`New Ticket from ${ticket.lastModifiedBy}:`);
+
+    ip = ticket.lastModifiedBy
+    console.log(`New Ticket from ${ip}:`);
     console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
+
+    console.log(` JOB: ${jobs[ip]}`);
+
+    Responses = jobs.clientResponses
+
+    Responses[ticket.lastModifiedBy] =
+    {
+      ip :  {
+        "hasUpdatedFile" : ticket.clientResponses.hasUpdatedFile
+      }
+    }
+
+    jobs.Responses = Responses;
+
+    console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
+
   });
 });
 
