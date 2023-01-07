@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
 
   socket.on("initialResponse", (ticket) => {
 
-    ip = ticket.lastModifiedBy
+    let ip = ticket.lastModifiedBy
     console.log(`New Ticket from ${ip}:`);
     console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
 
