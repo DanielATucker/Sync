@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   socket.on("pong", (ip) => {
     io.to("main").emit("message",`Client ${ip} is up`);
 
-    client = {
+    let client = {
       "client ip": ip,
       "socket_id": socket.id
     };
