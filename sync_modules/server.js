@@ -15,16 +15,16 @@ io.on("connection", (socket) => {
 
   console.log(socket.rooms);
   
-  socket.to("main").emit("message", `New queue ping:`);
+  io.to("main").emit("message", "New queue ping:");
   ping(socket);
 });
 
 io.on("pong", (socket) => {
-  socket.to("main").emit("message",`Socket ${socket.id} is up`);
+  io.to("main").emit("message",`Socket ${socket.id} is up`);
 });
 
 let ping = (socket) => {
-  socket.to("main").emit("ping");
+  io.to("main").emit("ping");
 };
 
 io.listen(6200);
