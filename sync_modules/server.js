@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
     console.log(`New Ticket from ${ip}:`);
     console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
 
-    console.log(` JOB: ${jobs.clientResponses}`);
+    console.log(` JOB: ${JSON.stringify(jobs, null, 2)}`);
 
     let Responses = jobs.clientResponses;
 
