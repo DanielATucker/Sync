@@ -38,7 +38,7 @@ function ping() {
 };
 
 function addClient(ip) {
-  clientList.concat(ip);
+  clientList.push(ip);
 
   console.log(`New Client list ${clientList}`);
 };
