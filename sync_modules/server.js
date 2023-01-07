@@ -12,7 +12,7 @@ io.on("connection", (socket) => {
   socket.join("main");
   
   socket.to("main").emit("message", `New queue ping:`);
-  ping();
+  ping(socket);
 });
 
 io.on("pong", (socket) => {
