@@ -8,7 +8,7 @@ const https = require("https");
 
 const hound = require('hound');
 
-function Backup(socket) {
+export default function Backup(socket) {
   process.title = "node-backup-script";
 
   // The value of process.platform will be:
