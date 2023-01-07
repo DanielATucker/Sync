@@ -68,12 +68,14 @@ io.on("connection", (socket) => {
   socket.on("initialResponse", (ticket) => {
 
     let ip = ticket.lastModifiedBy
+    let jobName = ticket.jobName
+
     console.log(`New Ticket from ${ip}:`);
     console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
 
     console.log(` JOB: ${JSON.stringify(jobs, null, 2)}`);
 
-    let Responses = jobs.clientResponses;
+    let Responses = jobs[jobName].clientResponses;
 
     Responses[ip] =
     {
@@ -82,7 +84,7 @@ io.on("connection", (socket) => {
       }
     }
 
-    jobs.Responses = Responses;
+    jobs[ip].Responses = Responses;
 
     console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
 
