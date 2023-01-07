@@ -8,11 +8,18 @@ var ip = require('ip');
 import { io } from "socket.io-client";
 import strftime from "strftime";
 
+import Backup from "./sync_modules/backup.js"
+
+
 const socket = io("http://100.69.19.3:6200");
 
 socket.on("connect", () => {
     console.log("Connected to server");
-    setTimeout(queue, 3000);  
+    setTimeout(newJob, 3000);
+    
+    setTimeout(Backup(socket), 3000);
+
+    console.log("Backup Started");
 });
 
 socket.on("message", (message) => {
@@ -55,7 +62,3 @@ socket.on("job", (ticket) => {
 socket.io.on("error", (error) => {
     console.log(error);
 });
-
-function queue() {
-    socket.emit("newJob", `fileName_${strftime("%y%m%d_%X")}`);
-};
