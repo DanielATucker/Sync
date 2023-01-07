@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
 
     console.log(` JOB: ${jobs[ip]}`);
 
-    Responses = jobs.clientResponses
+    let Responses = jobs.clientResponses
 
     Responses[ticket.lastModifiedBy] =
     {
