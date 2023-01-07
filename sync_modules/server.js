@@ -59,6 +59,8 @@ io.on("connection", (socket) => {
 
     console.log(`New Job`);
 
+    console.log(`Ticket: ${ticket}`);
+
     io.to("main").emit("job", newTicket);
   });
 

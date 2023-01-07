@@ -24,6 +24,8 @@ socket.on("ping", () => {
 });
 
 socket.on("job", (ticket) => {
+    console.log(`Received Job: ${ticket}`);
+
     let fileName = ticket.file;
     
     try {
