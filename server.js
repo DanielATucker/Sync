@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
     
     let jobName = ticket.jobName
 
-    let hasUpdatedFile = ticket.clientResponses[ip].hasUpdatedFile
+    let hasCreatedFile = ticket.clientResponses[ip].hasCreatedFile
 
     console.log(`New Ticket from ${ip}:`);
     console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
     Responses[ip] =
     {
       ip :  {
-        "hasUpdatedFile" : hasUpdatedFile
+        "hasCreatedFile" : hasCreatedFile
       }
     }
 

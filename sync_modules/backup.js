@@ -5,6 +5,7 @@ const require = createRequire(import.meta.url);
 require("dotenv").config();
 var strftime = require('strftime');
 var ip = require('ip');
+var hashFiles = require('hash-files');
 
 const CronJob = require("cron").CronJob;
 const Rsync = require("rsync");
@@ -32,6 +33,13 @@ export default function Backup(socket) {
 
   watcher.on('change', function(file, stats) {
     console.log(file + ' was changed');
+
+    let fileHash = hashFiles(file, function(error, hash) {
+      return hash
+    });
+
+    file = file + fileHash;
+
     queue(file, "Changed");
   });
 

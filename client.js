@@ -32,10 +32,20 @@ socket.on("ping", () => {
 socket.on("job", (ticket) => {
     console.log(`Received Job: ${JSON.stringify(ticket, null, 2)}`);
     
-    doesExist(ticket)
+    if (ticket.jobType === "Created" ){
+        created(ticket);
+    }
+    else if (ticket.jobType === "Changed" ){
+        changed(ticket);
+    }
+    else if (ticket.jobType === "Deleted" ){
+        deleted(ticket);
+    };
+
+
 });
 
-function doesExist(ticket){
+function created(ticket){
 
     let fileName = ticket.file;
 
@@ -44,7 +54,7 @@ function doesExist(ticket){
         console.log(`${fileName} Found`)
 
         ticket.clientResponses[ip.address()] = {
-            "hasUpdatedFile": true
+            "hasCreatedFile": true
         };
 
         ticket.lastModifiedBy = ip.address();
@@ -55,13 +65,31 @@ function doesExist(ticket){
         console.log(`${fileName} Not Found`);
 
         ticket.clientResponses[ip.address()] = {
-            "hasUpdatedFile": false
+            "hasCreatedFile": false
         };
 
         ticket.lastModifiedBy = ip.address();
 
         socket.emit("initialResponse", ticket);
     }
+};
+
+function changed(ticket){
+    // is originalhash = currenthash
+};
+
+function deleted(ticket){
+    
+    ticket.clientResponses[ip.address()] = {
+        "DELETE REQUEST": true
+    };
+
+    ticket.lastModifiedBy = ip.address();
+
+    socket.emit("initialResponse", ticket);
+
+    console.log(`DELETE REQUEST ${ticket.file}`)
+    //DELETE REQUEST()
 };
 
 
