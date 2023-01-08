@@ -4,6 +4,8 @@ const require = createRequire(import.meta.url);
 
 const fs = require('fs')
 var ip = require('ip');
+var hashFiles = require('hash-files');
+
 
 import { io } from "socket.io-client";
 import strftime from "strftime";
@@ -75,7 +77,26 @@ function created(ticket){
 };
 
 function changed(ticket){
-    // is originalhash = currenthash
+    let newHash = hashFiles.sync(ticket.file);
+
+    if (ticket.hash == newHash) {
+        ticket.clientResponses[ip.address()] = {
+            "recommendSync": false
+        };
+    
+        ticket.lastModifiedBy = ip.address();
+    
+        socket.emit("initialResponse", ticket);
+    }
+    else {
+        ticket.clientResponses[ip.address()] = {
+            "recommendSync": true
+        };
+    
+        ticket.lastModifiedBy = ip.address();
+    
+        socket.emit("initialResponse", ticket);
+    };
 };
 
 function deleted(ticket){
