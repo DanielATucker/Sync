@@ -31,9 +31,15 @@ socket.on("ping", () => {
 
 socket.on("job", (ticket) => {
     console.log(`Received Job: ${JSON.stringify(ticket, null, 2)}`);
+    
+    doesExist(ticket)
+});
+
+function doesExist(ticket){
 
     let fileName = ticket.file;
-    
+
+
     if (fs.existsSync(fileName)) {
         console.log(`${fileName} Found`)
 
@@ -56,7 +62,8 @@ socket.on("job", (ticket) => {
 
         socket.emit("initialResponse", ticket);
     }
-});
+};
+
 
 socket.io.on("error", (error) => {
     console.log(error);
