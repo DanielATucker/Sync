@@ -79,7 +79,7 @@ function created(ticket){
 function changed(ticket){
     let newHash = hashFiles.sync(ticket.file);
 
-    if (ticket.hash == newHash) {
+    if (ticket.hash === newHash) {
         ticket.clientResponses[ip.address()] = {
             "recommendSync": false
         };
