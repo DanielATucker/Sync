@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
       "clientResponses": {}
     };
 
-    jobs[fileName] = newTicket;
+    jobs[fileName.replace(/\\/g, "/")] = newTicket;
 
     console.log(`New Job:`);
 
