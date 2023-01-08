@@ -38,7 +38,7 @@ export default function Backup(socket) {
       return hash
     });
 
-    file = file + fileHash;
+    file = file +  "_" + fileHash;
 
     queue(file, "Changed");
   });
