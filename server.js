@@ -124,7 +124,7 @@ function initialChange(ticket) {
     console.log(`SYNC STARTING for ip: ${ip}`);
   }
   else if (ticket.clientResponses[ip].recommendSync === "false") {
-    console.log(`NO  STARTING for ip: ${ip}`);
+    console.log(`NO STARTING for ip: ${ip}`);
   };
 };
 
