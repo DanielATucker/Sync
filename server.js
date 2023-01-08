@@ -44,6 +44,7 @@ io.on("connection", (socket) => {
       "jobName": fileName.replace(/\\/g, "/"),
       "file": fileName.split('_')[1].replace(/\\/g, "/"),
       "jobType":fileName.split('_')[0],
+      "hash": fileName.split('_')[2],
       "createdTime": fileName.split('_')[3] + "_" + fileName.split('_')[4],
       "receivedTime": strftime("%y%m%d_%X"),
       "startedSync": false,
