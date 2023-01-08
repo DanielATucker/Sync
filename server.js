@@ -126,7 +126,7 @@ function initialChange(ticket) {
     console.log(`SYNC STARTING for ip: ${ip}`);
   }
   else {
-    console.log(`NO STARTING for ip: ${ip}`);
+    console.log(`NO SYNC STARTING for ip: ${ip}`);
   };
 };
 
