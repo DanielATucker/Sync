@@ -135,6 +135,8 @@ function initialChange(ticket) {
   else {
     console.log(`NO SYNC STARTING for ip: ${ip}`);
 
+    console.log(`ip JOBS: ${jobs[jobName].clientResponses[ip]}`)
+
     jobs[jobName].clientResponses[ip]["recommendSync"] = false;
 
     console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`);
