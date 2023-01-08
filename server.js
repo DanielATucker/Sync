@@ -122,7 +122,7 @@ function initialChange(ticket) {
 
   console.log(`Initial Change Ticket: ${JSON.stringify(ticket, null, 2)}`)
 
-
+  console.log(ticket.clientResponses[ip].recommendSync)
   if (ticket.clientResponses[ip].recommendSync === "true") {
     console.log(`SYNC STARTING for ip: ${ip}`);
   }
