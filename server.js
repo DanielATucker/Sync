@@ -105,12 +105,9 @@ function initialCreate(ticket) {
 
   let Responses = jobs[jobName].clientResponses;
 
-  Responses[ip] =
-  {
-    ip :  {
-      "hasCreatedFile" : hasCreatedFile
-    }
-  }
+  Responses[ip] = {
+    "hasCreatedFile" : hasCreatedFile
+  };
 
   jobs[jobName].clientResponses = Responses;
 
@@ -128,16 +125,13 @@ function initialChange(ticket) {
 
     let Responses = jobs[jobName].clientResponses;
 
-    Responses[ip] =
-    {
-      ip :  {
-        "recommendSync" : true
-      }
-    }
+    Responses[ip] ={
+      "recommendSync" : true
+    };
 
     jobs[jobName].clientResponses = Responses;
 
-    console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
+    console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`);
   }
   else {
     console.log(`NO SYNC STARTING for ip: ${ip}`);
@@ -146,19 +140,16 @@ function initialChange(ticket) {
 
     let Responses = jobs[jobName].clientResponses;
 
-    Responses[ip] =
-    {
-      ip :  {
-        "recommendSync" : false
-      }
-    }
+    Responses[ip] ={
+      "recommendSync" : false
+    };
 
     console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`);
   };
 };
 
 function initialDelete(ticket) {
-  let ip = ticket.lastModifiedBy
+  let ip = ticket.lastModifiedBy;
 
   if (ticket.clientResponses[ip].DELETE_REQUEST === "true") {
     console.log(`DELETE REQUEST for ip: ${ip}`);
@@ -171,4 +162,4 @@ function initialDelete(ticket) {
 
 io.listen(6200);
 
-console.log("Server online")
+console.log("Server online");
