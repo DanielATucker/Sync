@@ -118,7 +118,10 @@ function initialCreate(ticket) {
 };
 
 function initialChange(ticket) {
-  let ip = ticket.lastModifiedBy
+  let ip = ticket.lastModifiedBy;
+
+  console.log(`Initial Change Ticket: ${JSON.stringify(ticket)}`)
+
 
   if (ticket.clientResponses[ip].recommendSync === "true") {
     console.log(`SYNC STARTING for ip: ${ip}`);
