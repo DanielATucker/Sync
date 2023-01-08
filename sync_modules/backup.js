@@ -34,9 +34,7 @@ export default function Backup(socket) {
   watcher.on('change', function(file, stats) {
     console.log(file + ' was changed');
 
-    let fileHash = hashFiles(file, function(error, hash) {
-      return hash
-    });
+    let fileHash = hashFiles(file);
 
     file = file +  "_" + fileHash;
 
