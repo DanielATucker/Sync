@@ -27,15 +27,11 @@ export default function Backup(socket) {
   watcher.on('create', function(file, stats) {
     console.log(file + ' was created');
     
-    console.log(`Stats: ${JSON.stringify(stats, null, 2)}`);
-
     queue(file, "Created");
   });
 
   watcher.on('change', function(file, stats) {
     console.log(file + ' was changed');
-    console.log(`Stats: ${JSON.stringify(stats, null, 2)}`);
-
     queue(file, "Changed");
   });
 
