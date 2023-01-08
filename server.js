@@ -126,7 +126,9 @@ function initialChange(ticket) {
   if (ticket.clientResponses[ip].recommendSync === "true") {
     console.log(`SYNC STARTING for ip: ${ip}`);
 
-    jobs[jobName].clientResponses[ip]["recommendSync"] = true;
+    console.log(`ip JOBS: ${jobs[jobName].clientResponses[ip]}`)
+    //oldJobs = 
+    //jobs[jobName].clientResponses[ip]["recommendSync"] = true;
 
     console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
   }
