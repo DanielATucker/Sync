@@ -69,30 +69,15 @@ io.on("connection", (socket) => {
 
   socket.on("initialResponse", (ticket) => {
 
-    let ip = ticket.lastModifiedBy
-    
-    let jobName = ticket.jobName
-
-    let hasCreatedFile = ticket.clientResponses[ip].hasCreatedFile
-
-    console.log(`New Ticket from ${ip}:`);
-    console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
-
-    console.log(` JOB: ${JSON.stringify(jobs, null, 2)}`);
-
-    let Responses = jobs[jobName].clientResponses;
-
-    Responses[ip] =
-    {
-      ip :  {
-        "hasCreatedFile" : hasCreatedFile
-      }
+    if (ticket.jobType === "Created") {
+      initialCreate(ticket);
     }
-
-    jobs[jobName].clientResponses = Responses;
-
-    console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
-
+    else if (ticket.jobType === "Changed") {
+      initialChange(ticket);
+    }
+    else if (ticket.jobType === "Deleted") {
+      initialDelete(ticket);
+    };
   });
 });
 
@@ -105,6 +90,53 @@ function addClient(ip) {
   clientList.push(ip);
 
   console.log(`New Client list ${JSON.stringify(clientList, null, 2)}`);
+};
+
+
+function initialCreate(ticket) {
+  let ip = ticket.lastModifiedBy
+    
+  let jobName = ticket.jobName
+
+  let hasCreatedFile = ticket.clientResponses[ip].hasCreatedFile
+
+  console.log(`New Ticket from ${ip}:`);
+  console.log(`Ticket: ${JSON.stringify(ticket, null, 2)}`);
+
+  let Responses = jobs[jobName].clientResponses;
+
+  Responses[ip] =
+  {
+    ip :  {
+      "hasCreatedFile" : hasCreatedFile
+    }
+  }
+
+  jobs[jobName].clientResponses = Responses;
+
+  console.log(`Jobs Status: ${JSON.stringify(jobs, null, 2)}`)
+};
+
+function initialChange(ticket) {
+  let ip = ticket.lastModifiedBy
+
+  if (ticket.clientResponses[ip].recommendSync === "true") {
+    console.log(`SYNC STARTING for ip: ${ip}`);
+  }
+  else if (ticket.clientResponses[ip].recommendSync === "false") {
+    console.log(`NO  STARTING for ip: ${ip}`);
+  };
+};
+
+function initialDelete(ticket) {
+  let ip = ticket.lastModifiedBy
+
+  if (ticket.clientResponses[ip].DELETE_REQUEST === "true") {
+    console.log(`DELETE REQUEST for ip: ${ip}`);
+  }
+  else if (ticket.clientResponses[ip].recommendSync === "false") {
+    console.log(`NO DELETE REQUEST for ip: ${ip}`);
+  };
 };
 
 

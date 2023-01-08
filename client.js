@@ -102,7 +102,7 @@ function changed(ticket){
 function deleted(ticket){
     
     ticket.clientResponses[ip.address()] = {
-        "DELETE REQUEST": true
+        "DELETE_REQUEST": true
     };
 
     ticket.lastModifiedBy = ip.address();
