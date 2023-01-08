@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
 
   socket.on("newJob", (fileName) => {
     let newTicket = {
-      "jobName": fileName,
+      "jobName": fileName.replace(/\\/g, "/"),
       "file": fileName.split('_')[0],
       "createdTime": fileName.split('_')[2] + "_" + fileName.split('_')[3],
       "receivedTime": strftime("%y%m%d_%X"),
