@@ -136,8 +136,6 @@ function initialChange(ticket) {
   else {
     console.log(`NO SYNC STARTING for ip: ${ip}`);
 
-    console.log(`SYNC STARTING for ip: ${ip}`);
-
     let Responses = jobs[jobName].clientResponses;
 
     Responses[ip] ={
@@ -157,6 +155,13 @@ function initialDelete(ticket) {
   else if (ticket.clientResponses[ip].recommendSync === "false") {
     console.log(`NO DELETE REQUEST for ip: ${ip}`);
   };
+};
+
+function syncHandler() {
+  // load all clients
+  // set default client timeout time to 0
+  // if triggered 
+
 };
 
 
