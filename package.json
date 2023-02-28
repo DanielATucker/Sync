@@ -24,8 +24,6 @@
     "ip": "^1.1.8",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
-    "sqlite": "^4.1.2",
-    "sqlite-json": "^1.2.1",
     "sqlite3": "^5.1.4",
     "strftime": "^0.10.1"
   }
