@@ -41,7 +41,7 @@ serverList.forEach((server) => {
         if (!(manifest.server_ip === ip.address())) {
             console.log(`Not the same ip`);
 
-            console.log(`Received manifest: ${manifest}`);
+            console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
         }
     });
 
