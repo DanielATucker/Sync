@@ -9,10 +9,6 @@ var sqlite3 = require('sqlite3');
 const fs = require('fs');
 var ip = require('ip');
 
-const sqliteJson = require('sqlite-json');
-const exporter = sqliteJson('./manifest/manifest.db');
-
-
 //init socketio
 
 
