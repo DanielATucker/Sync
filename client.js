@@ -15,7 +15,7 @@ dotenv.config()
 
 
 
-let serverList = [ip.address(), process.env.Server_ip ];
+let serverList = [ip.address(), process.env.Server ];
 
 serverList.forEach((server) => {
     const socket = io(`http://${server}}:6200`);
