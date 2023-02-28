@@ -15,10 +15,10 @@ dotenv.config()
 
 
 
-let serverList = [ip.address(), process.env.Server ];
+let serverList = [JSON.parse(JSON.stringify(ip.address()))];
 
 serverList.forEach((server) => {
-    const socket = io(`http://${server}}:6200`);
+    const socket = io(`http://${server}:6200`);
 
     socket.on("connect", () => {
         console.log("Connected to server");
