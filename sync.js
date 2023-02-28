@@ -127,7 +127,7 @@ function get_manifest(socket) {
     };
 
     let manifest = {
-      "server": server_ip,
+      "server_ip": server_ip,
       "clientList": clientList
     }
 
