@@ -44,7 +44,7 @@ function init_socketio() {
     });
 
     socket.on("get_manifest", () => {
-      get_manifest(socket);
+      get_manifest(io);
     });
   });
 
@@ -107,7 +107,7 @@ function add_manifest(clientList) {
 
 }
 
-function get_manifest(socket) {
+function get_manifest(io) {
   let db = load_manifest();
 
   db.each("SELECT client_ip AS c_ip, socket_id AS s_id, server_ip AS s_ip FROM client_list", (err, row) => {
