@@ -42,6 +42,17 @@ serverList.forEach((server) => {
             console.log(`Not the same ip`);
 
             console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
+
+            if (serverList.includes(JSON.stringify(manifest.server_ip))) {
+                console.log(`Found: ${manifest.server_ip} in serverList`);
+            }
+            else {
+                console.log(`Did not find ${manifest.server_ip} in serverList, adding now.`);
+
+                serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
+                
+                console.log(`New server list: ${JSON.stringify(serverList, null, 2)}`);
+            };            
         }
     });
 
