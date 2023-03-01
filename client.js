@@ -50,10 +50,10 @@ function Start(serverIp) {
 
     socket.on("return_manifest", (manifest) => {
         
-        if (!(manifest.server_ip === myip)) {
+        if (manifest.server_ip !== myip) {
             if (!(serverList.includes(manifest.server_ip))) {
                 serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
-                
+
                 try {
                     Start(manifest.server_ip);
                 }
