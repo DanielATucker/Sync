@@ -52,7 +52,13 @@ function Start(serverIp) {
         if (manifest.server_ip !== myip) {
             console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
 
-            if (serverList.includes(manifest.server_ip) === false) {
+            if (serverList.includes(manifest.server_ip)) {
+                console.log(`Found: ${manifest.server_ip} in serverList`);
+
+                console.log(`server list: ${JSON.stringify(serverList, null, 2)}`);
+
+            }
+            else {
                 console.log(`Did not find ${manifest.server_ip} in serverList, adding now.`);
 
                 serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
@@ -65,8 +71,8 @@ function Start(serverIp) {
                 catch (err) {
                     console.log(err);
                 }
-            };     
-        };
+            };            
+        }
     });
 
     socket.io.on("error", (error) => {
