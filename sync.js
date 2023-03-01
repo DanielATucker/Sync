@@ -180,8 +180,6 @@ function create_manifest() {
         db.run(query);
 
         console.log(`Created client_list table`);
-
-        db.close();
       }
       catch (err) {
         console.log(err);
@@ -211,6 +209,8 @@ function create_manifest() {
         console.log(err);
       };
       
+      db.close();
+
       return db;
     }
   });  
