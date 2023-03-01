@@ -24,8 +24,12 @@ try {
 
 let serverList = [myip];
 
-serverList.forEach((server) => {
-    const socket = io(`http://${server}:6200`);
+serverList.forEach((serverIp) => {
+    Start(serverIp)
+});
+
+function Start(serverIp) {
+    const socket = io(`http://${serverIp}:6200`);
 
     socket.on("connect", () => {
         console.log("Connected to server");
@@ -63,6 +67,15 @@ serverList.forEach((server) => {
                 serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
                 
                 console.log(`New server list: ${JSON.stringify(serverList, null, 2)}`);
+
+                console.log(`connecting to new server`);
+
+                try {
+                    Start(manifest.server_ip);
+                }
+                catch (err) {
+                    console.log(err);
+                }
             };            
         }
     });
@@ -70,4 +83,4 @@ serverList.forEach((server) => {
     socket.io.on("error", (error) => {
         console.log(error);
     });
-});
+};
