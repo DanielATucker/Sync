@@ -108,8 +108,6 @@ function add_manifest(clientList) {
 }
 
 function get_manifest(socket) {
-  console.log(`GET MANIFEST`);
-
   let db = load_manifest();
 
   db.each("SELECT client_ip AS c_ip, socket_id AS s_id, server_ip AS s_ip FROM client_list", (err, row) => {
@@ -127,7 +125,7 @@ function get_manifest(socket) {
       "clientList": clientList
     }
 
-    socket.emit("return_manifest", manifest);
+    io.to("main").emit("return_manifest", manifest);
   });
 };
 
