@@ -50,8 +50,6 @@ function Start(serverIp) {
 
     socket.on("return_manifest", (manifest) => {
         if (manifest.server_ip !== myip) {
-            console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
-
             if (serverList.includes(manifest.server_ip)) {
             }
             else {
