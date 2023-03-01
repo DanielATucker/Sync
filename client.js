@@ -38,7 +38,15 @@ serverList.forEach((server) => {
     });
 
     socket.on("return_manifest", (manifest) => {
-        if (!(manifest.server_ip === (ip.address("Tailscale")) || ( ip.address("tailscale0")))) {
+        let myip = null;
+
+        try {
+            myip = ip.address("Tailscale")
+        } catch {
+            myip = ip.address("tailscale0");
+        };
+        
+        if (!(manifest.server_ip === myip)) {
             console.log(`Not the same ip`);
 
             console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
