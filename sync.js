@@ -202,8 +202,6 @@ function create_manifest() {
         db.run(query2);
 
         console.log(`Created Approved_Files table`);
-
-        db.close();
       }
       catch (err) {
         console.log(err);
