@@ -192,9 +192,10 @@ function create_manifest() {
         file_name TEXT NOT NULL, \
         file_hash TEXT NOT NULL, \
         name_hash TEXT NOT NULL, \
-        last_modified TEXT NOT NULL, \
-        deleted TEXT NOT NULL, \
-        recycled TEXT NOT NULL, \
+        duplicate_no TEXT, \
+        last_modified TEXT, \
+        deleted TEXT, \
+        recycled TEXT, \
         original_server_ip TEXT NOT NULL\
       );`
 
