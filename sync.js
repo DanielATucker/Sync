@@ -173,7 +173,7 @@ function create_manifest() {
         client_ip TEXT NOT NULL,\
         socket_id TEXT NOT NULL,\
         server_ip TEXT NOT NULL,\
-        id INT AUTO_INCREMENT PRIMARY KEY,\
+        id INT AUTO_INCREMENT PRIMARY KEY\
       );`
       
       try {
