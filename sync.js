@@ -187,11 +187,11 @@ function create_manifest() {
 
       let query2 = `CREATE TABLE IF NOT EXISTS Approved_Files ( \
         id INT AUTO_INCREMENT PRIMARY KEY, \
+        manifest_uuid TEXT NOT NULL, \
         file_location TEXT NOT NULL, \
         file_name TEXT NOT NULL, \
         file_hash TEXT NOT NULL, \
         name_hash TEXT NOT NULL, \
-        manifest_uuid TEXT NOT NULL, \
         last_modified TEXT NOT NULL, \
         deleted TEXT NOT NULL, \
         recycled TEXT NOT NULL, \
