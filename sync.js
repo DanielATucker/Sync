@@ -105,7 +105,7 @@ function add_manifest(clientList) {
 
   try {
     clientList.forEach((client)=> {
-      let query = `INSERT or REPLACE INTO client_list (client_ip, socket_id, server_ip)\
+      let query = `INSERT or REPLACE INTO client_list (client_ip, socket_id, server_ip) \
       VALUES (${JSON.stringify(client.client_ip)}, ${JSON.stringify(client.socket_id)}, ${JSON.stringify(client.client_ip)})`
     
       db.run(query);
