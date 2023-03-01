@@ -50,17 +50,33 @@ function Start(serverIp) {
 
     socket.on("return_manifest", (manifest) => {
         
-        if (manifest.server_ip !== myip) {
-            if (!(serverList.includes(manifest.server_ip))) {
+        if (!(manifest.server_ip === myip)) {
+            console.log(`Not the same ip`);
+
+            console.log(`Received manifest: ${JSON.stringify(manifest, null, 2)}`);
+
+            if (serverList.includes(manifest.server_ip)) {
+                console.log(`Found: ${manifest.server_ip} in serverList`);
+
+                console.log(`server list: ${JSON.stringify(serverList, null, 2)}`);
+
+            }
+            else {
+                console.log(`Did not find ${manifest.server_ip} in serverList, adding now.`);
+
                 serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
+                
+                console.log(`New server list: ${JSON.stringify(serverList, null, 2)}`);
+
+                console.log(`connecting to new server`);
 
                 try {
-                    Start(manifest.server_ip);
+                    Start(manifest.server_ip)
                 }
                 catch (err) {
                     console.log(err);
                 }
-            };          
+            };            
         }
     });
 
