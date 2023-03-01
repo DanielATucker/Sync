@@ -23,14 +23,16 @@ try {
 
 
 let clientList = [];
-let jobs = {};
+
+let ApprovedFiles = {};
+
 
 function init_socketio() {
   console.log(`Initializing socket.io`);
 
   const io = new Server({
     cors: {
-        origin: `*`,
+      origin: `*`,
     }
   });
 
@@ -99,7 +101,7 @@ function add_manifest(clientList) {
   let manifest = {
     "server": ip.address(),
     "clientList": clientList
-  }
+  };
 
   let db = load_manifest();
 
@@ -113,9 +115,8 @@ function add_manifest(clientList) {
   }
   catch (err) {
     console.log(`ERROR ${err}`);
-  }
-
-}
+  };
+};
 
 function get_manifest(io) {
   let db = load_manifest();
@@ -138,7 +139,6 @@ function get_manifest(io) {
     io.to("main").emit("return_manifest", manifest);
   });
 };
-
 
 function does_manifest_exist() {
   let manifest_file = "./manifest/manifest.db";
@@ -179,14 +179,38 @@ function create_manifest() {
       try {
         db.run(query);
 
-        console.log(`Created table`);
+        console.log(`Created client_list table`);
 
         db.close();
       }
       catch (err) {
-        console.log(`ERROR creating table: ${JSON.stringify(err, null, 2)}`)
+        console.log(err);
+      };
+
+      let query2 = `CREATE TABLE IF NOT EXISTS Approved_Files ( \
+        id INT AUTO_INCREMENT PRIMARY KEY, \
+        file_location TEXT NOT NULL, \
+        file_name TEXT NOT NULL, \
+        file_hash TEXT NOT NULL, \
+        name_hash TEXT NOT NULL, \
+        manifest_uuid TEXT NOT NULL, \
+        last_modified TEXT NOT NULL, \
+        deleted TEXT NOT NULL, \
+        recycled TEXT NOT NULL, \
+        original_server_ip TEXT NOT NULL\
+      );`
+
+      try {
+        db.run(query2);
+
+        console.log(`Created Approved_Files table`);
+
+        db.close();
       }
-    
+      catch (err) {
+        console.log(err);
+      };
+      
       return db;
     }
   });  
@@ -199,7 +223,7 @@ function load_manifest(){
     }
     else {
       //Manifest exists
-    }
+    };
   });
 
   return db;
@@ -212,7 +236,6 @@ const Start = new Promise((resolve, reject) => {
 
   resolve(db);
 });
-
 
 Start.then((db) => {
   init_socketio();
