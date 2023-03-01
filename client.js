@@ -13,9 +13,16 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 dotenv.config()
 
 
+let myip = null;
+
+try {
+    myip = ip.address("Tailscale")
+} catch {
+    myip = ip.address("tailscale0");
+};
 
 
-let serverList = [JSON.parse(JSON.stringify(ip.address()))];
+let serverList = [myip];
 
 serverList.forEach((server) => {
     const socket = io(`http://${server}:6200`);
@@ -34,17 +41,10 @@ serverList.forEach((server) => {
 
     socket.on("ping", () => {
         console.log(`Received ping`);
-        socket.emit("pong", ip.address());  
+        socket.emit("pong", myip);  
     });
 
     socket.on("return_manifest", (manifest) => {
-        let myip = null;
-
-        try {
-            myip = ip.address("Tailscale")
-        } catch {
-            myip = ip.address("tailscale0");
-        };
         
         if (!(manifest.server_ip === myip)) {
             console.log(`Not the same ip`);

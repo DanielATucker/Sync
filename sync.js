@@ -9,6 +9,16 @@ var sqlite3 = require('sqlite3');
 const fs = require('fs');
 var ip = require('ip');
 
+
+let myip = null;
+
+try {
+    myip = ip.address("Tailscale")
+} catch {
+    myip = ip.address("tailscale0");
+};
+
+
 //init socketio
 
 
@@ -38,7 +48,7 @@ function init_socketio() {
     ping(socket.id);
 
     socket.on("pong", (ip) => {
-      io.to("main").emit("message",`Client ${ip} is up`);
+      io.to("main").emit("message",`Client ${socket.id} is up`);
 
       addClient(ip, socket.id);
     });
