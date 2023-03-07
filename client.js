@@ -33,10 +33,8 @@ function Start(serverIp) {
 
     socket.on("connect", () => {
         console.log("Connected to server");
-        
-        setInterval(() => {
-            socket.emit("get_manifest");
-        }, 1000);
+      
+        socket.emit("get_manifest");
     });
 
     socket.on("message", (message) => {

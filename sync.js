@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 import { Server } from "socket.io";
 import strftime from "strftime";
 
-var sqlite3 = require('sqlite3');
+import Database from "better-sqlite3";
 const fs = require('fs');
 var ip = require('ip');
 
@@ -83,7 +83,8 @@ function init_socketio() {
     else {
       let client = {
         "client_ip": ip,
-        "socket_id": id
+        "socket_id": id,
+        "server_ip": myip,
       };
 
       clientList.push(client);
@@ -107,10 +108,11 @@ function add_manifest(clientList) {
 
   try {
     clientList.forEach((client)=> {
-      let query = `INSERT or REPLACE INTO client_list (client_ip, socket_id, server_ip) \
-      VALUES (${JSON.stringify(client.client_ip)}, ${JSON.stringify(client.socket_id)}, ${JSON.stringify(client.client_ip)})`
+      let query = `INSERT INTO client_list(client_ip, socket_id, server_ip) VALUES(?, ?, ?)`;
     
-      db.run(query);
+      let sent = db.prepare(query);
+
+      sent.run(JSON.stringify(client.client_ip), JSON.stringify(client.socket_id), JSON.stringify(client.server_ip));
     });
   }
   catch (err) {
@@ -121,23 +123,63 @@ function add_manifest(clientList) {
 function get_manifest(io) {
   let db = load_manifest();
 
-  db.each("SELECT client_ip AS c_ip, socket_id AS s_id, server_ip AS s_ip FROM client_list", (err, row) => {
-    let client_ip = row.c_ip;
-    let socket_id = row.s_id;
-    let server_ip = row.s_ip;
+  let manifest = {
+    "server_ip": myip,
+    "clientList": [],
+    "Approved_Files": {}
+  }
+  
+  const client_list_row = db.prepare("SELECT client_ip, socket_id, server_ip FROM client_list;");
 
-    let clientList = {
-      "socket_id": socket_id,
-      "client_ip": client_ip
-    };
+  let client_ip = client_list_row.c_ip;
+  let socket_id = client_list_row.s_id;
+  let server_ip = client_list_row.s_ip;
 
-    let manifest = {
-      "server_ip": server_ip,
-      "clientList": clientList
+  let clientList = {
+    "server_ip": server_ip,
+    "socket_id": socket_id,
+    "client_ip": client_ip
+  };
+
+  if (!(JSON.stringify(manifest).includes(socket_id))) {
+    manifest["clientList"].push(clientList);
+  };
+
+  /* APPROVED FILES FORMAT
+  const Approved_files_row = db.prepare("SELECT id, manifest_hash, file_location, file_hash, name_hash, duplicate_no, last_modified, deleted, recycled, original_server_ip FROM Approved_Files");
+
+  let manifest_hash = Approved_files_row.manifest_hash;
+  let file_location = Approved_files_row.file_location;
+  let file_name = Approved_files_row.file_name;
+  let file_hash = Approved_files_row.file_hash;
+  let name_hash = Approved_files_row.name_hash;
+  let duplicate_no = Approved_files_row.duplicate_no;
+  let last_modified = Approved_files_row.last_modified;
+  let deleted = Approved_files_row.deleted;
+  let recycled = Approved_files_row.recycled;
+  let original_server_ip = Approved_files_row.original_server_ip;
+
+  let file_manifest = {
+    original_server_ip: {
+      name_hash: {
+        "manifest_hash": manifest_hash,
+        "file_location": file_location,
+        "file_name": file_name,
+        "file_hash":file_hash,
+        "name_hash": name_hash,
+        "duplicate_no": duplicate_no,
+        "last_modified": last_modified,
+        "deleted": deleted,
+        "recycled": recycled,
+        "original_server_ip": original_server_ip
+      }
     }
+  };
+  */
 
-    io.to("main").emit("return_manifest", manifest);
-  });
+  console.log(`THIS SERVER manifest: ${JSON.stringify(manifest, null, 2)}`);
+  
+  db.close();
 };
 
 function does_manifest_exist() {
@@ -160,71 +202,68 @@ function does_manifest_exist() {
 };
 
 function create_manifest() {
-  let db = new sqlite3.Database('./manifest/manifest.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-    if (err) {
-      console.log("Getting error " + err);
-    }
-    else {
-      //Manifest exists
+  let db;
+
+  try {
+    db = new Database('./manifest/manifest.db');
+
+    //Manifest exists
     
-      console.log(`Database created`);
+    console.log(`Database created`);
 
-      let query = `CREATE TABLE IF NOT EXISTS client_list (\
-        client_ip TEXT NOT NULL,\
-        socket_id TEXT NOT NULL,\
-        server_ip TEXT NOT NULL,\
-        id INT AUTO_INCREMENT PRIMARY KEY\
-      );`
+    let query = `CREATE TABLE IF NOT EXISTS client_list (\
+      client_ip TEXT NOT NULL,\
+      socket_id TEXT NOT NULL,\
+      server_ip TEXT NOT NULL,\
+      id INT AUTO_INCREMENT PRIMARY KEY\
+    );`
       
-      try {
-        db.run(query);
+    try {
+      db.exec(query);
 
-        console.log(`Created client_list table`);
-      }
-      catch (err) {
-        console.log(err);
-      };
-
-      let query2 = `CREATE TABLE IF NOT EXISTS Approved_Files ( \
-        id INT AUTO_INCREMENT PRIMARY KEY, \
-        manifest_uuid TEXT NOT NULL, \
-        file_location TEXT NOT NULL, \
-        file_name TEXT NOT NULL, \
-        file_hash TEXT NOT NULL, \
-        name_hash TEXT NOT NULL, \
-        duplicate_no TEXT, \
-        last_modified TEXT, \
-        deleted TEXT, \
-        recycled TEXT, \
-        original_server_ip TEXT NOT NULL\
-      );`
-
-      try {
-        db.run(query2);
-
-        console.log(`Created Approved_Files table`);
-      }
-      catch (err) {
-        console.log(err);
-      };
-      
-      db.close();
-
-      return db;
+      console.log(`Created client_list table`);
     }
-  });  
+    catch (err) {
+      console.log(err);
+    };
+
+    let query2 = `CREATE TABLE IF NOT EXISTS Approved_Files ( \
+      id INT AUTO_INCREMENT PRIMARY KEY, \
+      manifest_hash TEXT NOT NULL, \
+      file_location TEXT NOT NULL, \
+      file_name TEXT NOT NULL, \
+      file_hash TEXT NOT NULL, \
+      name_hash TEXT NOT NULL, \
+      duplicate_no TEXT, \
+      last_modified TEXT, \
+      deleted TEXT, \
+      recycled TEXT, \
+      original_server_ip TEXT NOT NULL\
+    );`
+
+    try {
+      db.exec(query2);
+      console.log(`Created Approved_Files table`);
+    }
+    catch (err) {
+      console.log(err);
+    };
+      
+    db.close();
+
+    return db;
+  }
+  catch (err){
+    console.log(err);
+  }
 };
 
-function load_manifest(){
-  let db = new sqlite3.Database('./manifest/manifest.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-      console.log("Getting error " + err);
-    }
-    else {
-      //Manifest exists
-    };
-  });
 
+function load_manifest(){
+  const db = new Database('./manifest/manifest.db');
+  
+  db.pragma('journal_mode = WAL');
+  
   return db;
 };
 
