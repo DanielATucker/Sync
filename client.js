@@ -22,7 +22,7 @@ try {
 };
 
 
-let serverList = [myip];
+let serverList = [myip, process.env.Server_ip];
 
 serverList.forEach((serverIp) => {
     Start(serverIp)
