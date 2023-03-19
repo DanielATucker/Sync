@@ -123,7 +123,7 @@ function add_manifest(clientList) {
 
   try {
     clientList.forEach((client)=> {
-      if (! (client_list.includes(client.socket_id))) {
+      if (! (JSON.stringify(client_list).includes(client.socket_id))) {
         let query = `INSERT INTO client_list(client_ip, socket_id, server_ip) VALUES(?, ?, ?)`;
     
         let sent = db.prepare(query);
