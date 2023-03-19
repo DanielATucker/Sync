@@ -53,28 +53,32 @@ function Start(serverIp) {
     socket.on("return_manifest", (manifest) => {
         console.log(`Manifest returned: ${JSON.stringify(manifest, null, 2)}`);
 
-        if (manifest.server_ip !== myip) {
-            if (serverList.includes(manifest.server_ip)) {
-                console.log("found");
+        let clientList = manifest.clientList;
+        
+        for (client of clientList) {
+            if (client.server_ip !== myip) {
+                if (serverList.includes(client.server_ip)) {
+                    console.log("found");
+                }
+                else {
+                    console.log(`Did not find ${client.server_ip} in serverList, adding now.`);
+    
+                    serverList.push(JSON.parse(JSON.stringify(client.server_ip)));
+                    
+                    console.log(`connecting to new server`);
+    
+                    try {
+                        Start(client.server_ip)
+                    }
+                    catch (err) {
+                        console.log(err);
+                    }
+                };            
             }
             else {
-                console.log(`Did not find ${manifest.server_ip} in serverList, adding now.`);
-
-                serverList.push(JSON.parse(JSON.stringify(manifest.server_ip)));
-                
-                console.log(`connecting to new server`);
-
-                try {
-                    Start(manifest.server_ip)
-                }
-                catch (err) {
-                    console.log(err);
-                }
-            };            
-        }
-        else {
-            console.log(`IP match, not adding`);
-        }
+                console.log(`IP match, not adding`);
+            }
+        };
     });
 
     socket.io.on("error", (error) => {
