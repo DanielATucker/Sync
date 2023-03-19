@@ -55,7 +55,7 @@ function Start(serverIp) {
 
         let clientList = manifest.clientList;
         
-        for (client of clientList) {
+        for (let client of clientList) {
             if (client.server_ip !== myip) {
                 if (serverList.includes(client.server_ip)) {
                     console.log("found");
