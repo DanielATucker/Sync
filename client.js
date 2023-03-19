@@ -58,7 +58,7 @@ function Start(serverIp) {
         for (let client of clientList) {
             if (client.server_ip !== myip) {
                 if (serverList.includes(client.server_ip)) {
-                    console.log("found");
+                    console.log(`IP found, not connecting`);
                 }
                 else {
                     console.log(`Did not find ${client.server_ip} in serverList, adding now.`);
