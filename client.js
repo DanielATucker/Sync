@@ -55,6 +55,7 @@ function Start(serverIp) {
 
         if (manifest.server_ip !== myip) {
             if (serverList.includes(manifest.server_ip)) {
+                console.log("found");
             }
             else {
                 console.log(`Did not find ${manifest.server_ip} in serverList, adding now.`);
