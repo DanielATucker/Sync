@@ -47,7 +47,7 @@ function init_socketio() {
     ping(socket.id);
 
     socket.on("pong", (ip) => {
-      io.to("main").emit("message",`Client ${socket.id} is up`);
+      // io.to("main").emit("message",`Client ${socket.id} is up`);
 
       addClient(ip, socket.id);
     });
