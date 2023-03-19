@@ -69,7 +69,7 @@ function Start(serverIp) {
                     console.log(`connecting to new server ${client.client_ip}`);
     
                     try {
-                        Start(client.server_ip)
+                        Start(client.client_ip)
                     }
                     catch (err) {
                         console.log(err);
