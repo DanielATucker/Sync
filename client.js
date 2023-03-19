@@ -50,7 +50,7 @@ function Start(serverIp) {
     });
 
     socket.on("return_manifest", (manifest) => {
-        console.log(`${manifest.Server_ip} Manifest returned: ${manifest}`);
+        console.log(`${manifest.server_ip} Manifest returned: ${manifest}`);
 
         let clientList = manifest.clientList;
         
