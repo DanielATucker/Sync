@@ -36,7 +36,7 @@ function Start(serverIp) {
     const socket = io(`http://${serverIp}:6200`);
 
     socket.on("connect", () => {
-        console.log("Connected to server");
+        console.log(`Connected to server ${serverIp}`);
       
         setTimeout(() => socket.emit("get_manifest"), 5000);
     });
@@ -46,7 +46,6 @@ function Start(serverIp) {
     });
 
     socket.on("ping", () => {
-        console.log(`Received ping`);
         socket.emit("pong", myip);  
     });
 

@@ -40,7 +40,7 @@ function init_socketio() {
     console.log(`${socket.id} Joined the queue`);
 
     socket.join("main");    
-    socket.emit("message", "Welcome to Main");
+    socket.emit("message", `Welcome to Main of ${myip}`);
 
     // io.to("main").emit("message", "New queue ping:");
 
