@@ -23,6 +23,7 @@
     "dotenv": "^16.0.3",
     "hash-files": "^1.1.1",
     "ip": "^1.1.8",
+    "kdel": "^1.0.0",
     "npm": "^9.6.0",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",

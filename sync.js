@@ -65,17 +65,34 @@ function init_socketio() {
   };
 
   function addClient(ip, id) {
-    if (JSON.stringify(clientList).includes(ip)) {
-      clientList.forEach((client, count) =>{
+    let db = load_manifest();
+    
+    const client_list = db.prepare("SELECT * FROM client_list;").all(); 
+    
+    client_list.forEach((client)=> {
+      delete client.id;
+    });
+
+    if (JSON.stringify(client_list).includes(ip)) {
+      client_list.forEach((client, count) =>{
         if (client.client_ip === ip) {
           if (client.socket_id !== id) {
             // if id is different, update it
   
-            clientList[count].socket_id = id;
 
-            console.log(`New Client list ${JSON.stringify(clientList, null, 2)}`);
 
-            add_manifest(clientList);
+            //update id in database
+
+            let query = `UPDATE client_list \
+            SET socket_id = ? \
+            WHERE client_ip = ? \
+            `;
+            
+            let sent = db.prepare(query);
+            
+            sent.run(id, ip);
+
+            console.log(`Updated client id`);
           };
         };
       });
@@ -88,6 +105,10 @@ function init_socketio() {
       };
 
       clientList.push(client);
+
+      console.log(`New client`);
+
+      console.log(`New Client list ${JSON.stringify(clientList, null, 2)}`);
 
       add_manifest(clientList);
     };
@@ -112,7 +133,7 @@ function add_manifest(clientList) {
     
       let sent = db.prepare(query);
 
-      sent.run(JSON.stringify(client.client_ip), JSON.stringify(client.socket_id), JSON.stringify(client.server_ip));
+      sent.run(client.client_ip, client.socket_id, client.server_ip);
     });
   }
   catch (err) {
@@ -129,21 +150,14 @@ function get_manifest(io) {
     "Approved_Files": {}
   }
   
-  const client_list_row = db.prepare("SELECT client_ip, socket_id, server_ip FROM client_list;");
+  const client_list = db.prepare("SELECT * FROM client_list;").all();
 
-  let client_ip = client_list_row.c_ip;
-  let socket_id = client_list_row.s_id;
-  let server_ip = client_list_row.s_ip;
+  client_list.forEach((client)=> {
+    delete client.id;
 
-  let clientList = {
-    "server_ip": server_ip,
-    "socket_id": socket_id,
-    "client_ip": client_ip
-  };
+    manifest.clientList.push(client);
+  });
 
-  if (!(JSON.stringify(manifest).includes(socket_id))) {
-    manifest["clientList"].push(clientList);
-  };
 
   /* APPROVED FILES FORMAT
   const Approved_files_row = db.prepare("SELECT id, manifest_hash, file_location, file_hash, name_hash, duplicate_no, last_modified, deleted, recycled, original_server_ip FROM Approved_Files");

@@ -22,7 +22,11 @@ try {
 };
 
 
-let serverList = [myip, process.env.Server_ip];
+let serverList = [myip];
+
+if (! (typeof process.env.Server_ip === null)) {
+    serverList.concat(process.env.Server_ip);
+};
 
 serverList.forEach((serverIp) => {
     Start(serverIp)
@@ -34,7 +38,7 @@ function Start(serverIp) {
     socket.on("connect", () => {
         console.log("Connected to server");
       
-        socket.emit("get_manifest");
+        setTimeout(() => socket.emit("get_manifest"), 5000);
     });
 
     socket.on("message", (message) => {
