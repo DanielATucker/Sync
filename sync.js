@@ -39,11 +39,8 @@ function init_socketio() {
   io.on("connection", (socket) => {
     console.log(`${socket.id} Joined the queue`);
 
-    socket.join("main");
-    
-    io.of("main").on("connection", (socket) => {
-      io.to("main").emit("message", "Welcome to Main");
-    });
+    socket.join("main");    
+    socket.emit("message", "Welcome to Main");
 
     io.to("main").emit("message", "New queue ping:");
 
@@ -56,7 +53,7 @@ function init_socketio() {
     });
 
     socket.on("get_manifest", () => {
-      get_manifest(io);
+      get_manifest(socket);
     });
   });
 
@@ -77,10 +74,6 @@ function init_socketio() {
       client_list.forEach((client, count) =>{
         if (client.client_ip === ip) {
           if (client.socket_id !== id) {
-            // if id is different, update it
-  
-
-
             //update id in database
 
             let query = `UPDATE client_list \
@@ -107,8 +100,6 @@ function init_socketio() {
       clientList.push(client);
 
       console.log(`New client`);
-
-      console.log(`New Client list ${JSON.stringify(clientList, null, 2)}`);
 
       add_manifest(clientList);
     };
@@ -141,7 +132,7 @@ function add_manifest(clientList) {
   };
 };
 
-function get_manifest(io) {
+function get_manifest(socket) {
   let db = load_manifest();
 
   let manifest = {
@@ -158,42 +149,11 @@ function get_manifest(io) {
     manifest.clientList.push(client);
   });
 
-
-  /* APPROVED FILES FORMAT
-  const Approved_files_row = db.prepare("SELECT id, manifest_hash, file_location, file_hash, name_hash, duplicate_no, last_modified, deleted, recycled, original_server_ip FROM Approved_Files");
-
-  let manifest_hash = Approved_files_row.manifest_hash;
-  let file_location = Approved_files_row.file_location;
-  let file_name = Approved_files_row.file_name;
-  let file_hash = Approved_files_row.file_hash;
-  let name_hash = Approved_files_row.name_hash;
-  let duplicate_no = Approved_files_row.duplicate_no;
-  let last_modified = Approved_files_row.last_modified;
-  let deleted = Approved_files_row.deleted;
-  let recycled = Approved_files_row.recycled;
-  let original_server_ip = Approved_files_row.original_server_ip;
-
-  let file_manifest = {
-    original_server_ip: {
-      name_hash: {
-        "manifest_hash": manifest_hash,
-        "file_location": file_location,
-        "file_name": file_name,
-        "file_hash":file_hash,
-        "name_hash": name_hash,
-        "duplicate_no": duplicate_no,
-        "last_modified": last_modified,
-        "deleted": deleted,
-        "recycled": recycled,
-        "original_server_ip": original_server_ip
-      }
-    }
-  };
-  */
+  db.close();
 
   console.log(`THIS SERVER manifest: ${JSON.stringify(manifest, null, 2)}`);
   
-  db.close();
+  socket.emit("return_manifest", manifest);
 };
 
 function does_manifest_exist() {

@@ -24,8 +24,8 @@ try {
 
 let serverList = [myip];
 
-if (! (typeof process.env.Server_ip === null)) {
-    serverList.concat(process.env.Server_ip);
+if (! (typeof process.env.Server_ip === "undefined")) {
+    serverList.push(process.env.Server_ip);
 };
 
 serverList.forEach((serverIp) => {
@@ -51,6 +51,8 @@ function Start(serverIp) {
     });
 
     socket.on("return_manifest", (manifest) => {
+        console.log(`Manifest returned: ${JSON.stringify(manifest, null, 2)}`);
+
         if (manifest.server_ip !== myip) {
             if (serverList.includes(manifest.server_ip)) {
             }
@@ -68,6 +70,9 @@ function Start(serverIp) {
                     console.log(err);
                 }
             };            
+        }
+        else {
+            console.log(`IP match, not adding`);
         }
     });
 
