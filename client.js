@@ -63,9 +63,9 @@ function Start(serverIp) {
                     console.log(`ServerList ${serverList}`);
                 }
                 else {
-                    console.log(`Did not find ${client.server_ip} in serverList, adding now.`);
+                    console.log(`Did not find client ${client.client_ip} in serverList, adding now.`);
     
-                    serverList.push(JSON.parse(JSON.stringify(client.server_ip)));
+                    serverList.push(client.client_ip);
                     
                     console.log(`connecting to new server`);
     
