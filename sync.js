@@ -42,7 +42,7 @@ function init_socketio() {
     socket.join("main");    
     socket.emit("message", "Welcome to Main");
 
-    io.to("main").emit("message", "New queue ping:");
+    // io.to("main").emit("message", "New queue ping:");
 
     ping(socket.id);
 
@@ -120,11 +120,13 @@ function add_manifest(clientList) {
 
   try {
     clientList.forEach((client)=> {
-      let query = `INSERT INTO client_list(client_ip, socket_id, server_ip) VALUES(?, ?, ?)`;
+      if (! (clientList.includes(client.socket_id))) {
+        let query = `INSERT INTO client_list(client_ip, socket_id, server_ip) VALUES(?, ?, ?)`;
     
-      let sent = db.prepare(query);
+        let sent = db.prepare(query);
 
-      sent.run(client.client_ip, client.socket_id, client.server_ip);
+        sent.run(client.client_ip, client.socket_id, client.server_ip);
+      }
     });
   }
   catch (err) {
