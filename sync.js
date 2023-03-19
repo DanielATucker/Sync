@@ -118,9 +118,12 @@ function add_manifest(clientList) {
 
   let db = load_manifest();
 
+  const client_list = db.prepare("SELECT * FROM client_list;").all();
+
+
   try {
     clientList.forEach((client)=> {
-      if (! (clientList.includes(client.socket_id))) {
+      if (! (client_list.includes(client.socket_id))) {
         let query = `INSERT INTO client_list(client_ip, socket_id, server_ip) VALUES(?, ?, ?)`;
     
         let sent = db.prepare(query);
