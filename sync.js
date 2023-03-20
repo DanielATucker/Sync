@@ -55,6 +55,13 @@ function init_socketio() {
     socket.on("get_manifest", () => {
       get_manifest(socket);
     });
+
+    socket.on("update_database", (update_command)=> {
+      console.log(`Update Command`);
+
+      update_database(update_command);
+    });
+
   });
 
   function ping() {
@@ -138,15 +145,20 @@ function add_manifest(clientList) {
 };
 
 function get_manifest(socket) {
-  let db = load_manifest();
+  let manifest_db = load_manifest();
+  let database_db = load_database();
+
+  let database_version_list = database_db.prepare("SELECT * FROM database_version_list;").all();
 
   let manifest = {
     "server_ip": myip,
     "clientList": [],
-    "Approved_Files": {}
+    "database": {
+      "version_list": database_version_list
+    }
   }
-  
-  const client_list = db.prepare("SELECT * FROM client_list;").all();
+
+  const client_list = manifest_db.prepare("SELECT * FROM client_list;").all();
 
   client_list.forEach((client)=> {
     delete client.id;
@@ -154,7 +166,7 @@ function get_manifest(socket) {
     manifest.clientList.push(client);
   });
 
-  db.close();
+  manifest_db.close();
 
   console.log(`THIS SERVER manifest: ${JSON.stringify(manifest, null, 2)}`);
   
@@ -188,7 +200,7 @@ function create_manifest() {
 
     //Manifest exists
     
-    console.log(`Database created`);
+    console.log(`Manifest created`);
 
     let query = `CREATE TABLE IF NOT EXISTS client_list (\
       client_ip TEXT NOT NULL,\
@@ -246,14 +258,110 @@ function load_manifest(){
   return db;
 };
 
+function load_database(){
+  const db = new Database('./manifest/database.db');
+  
+  db.pragma('journal_mode = WAL');
+  
+  return db;
+};
+
+function does_database_exist() {
+  let database_file = "./manifest/database.db";
+
+  if (fs.existsSync(database_file)) {
+    console.log(`Found Database`);
+
+    let db = load_database();
+
+    return db;
+  }
+  else {
+    console.log(`Could not find Database, Creating one now`);
+    
+    let db = create_database();
+
+    return db;
+  };
+};
+
+function create_database() {
+  let db;
+
+  try {
+    db = new Database('./manifest/database.db');
+    
+    console.log(`Database created`);
+
+    let query = `CREATE TABLE IF NOT EXISTS database_version_list (\
+    version TEXT NOT NULL PRIMARY KEY,\
+    update_command TEXT \
+    );`
+      
+    let query2 = `INSERT INTO database_version_list(version, update_command) VALUES(?, ?)`;
+        
+    try {
+      db.exec(query);
+    
+      console.log(`Created database_version_list table`);
+    
+      let sent = db.prepare(query2);
+    
+      sent.run(0, null);
+    
+      console.log("Added version 0 to Database");
+    }
+    catch (err) {
+      console.log(err);
+    };
+
+    db.close();
+
+    return db;
+  }
+  catch (err){
+    console.log(err);
+  }
+};
+
+function update_database(update_command) {
+  let database_db = load_database();
+
+  let version_list_in = database_db.prepare("SELECT * FROM database_version_list;").all();
+
+  let last_version_in = version_list_in.slice(-1).pop();
+
+  let version = Number(last_version_in.version) + 1;
+
+  let query = update_command.first;
+
+  let query2 = null;
+
+  if (update_command.values === null){
+    database_db.prepare(query).run();
+  } 
+  else {
+    // add values for inserting data
+
+    // query2 = 
+    // db.prepare(query).run(query2);
+  };
+
+  database_db.close();
+
+  console.log(`Sending version ${version} to all servers: ${JSON.stringify(update_command)}`);
+};
+
 //Start
 
 const Start = new Promise((resolve, reject) => {
   let db = does_manifest_exist();
+  
+  let db2 = does_database_exist();
 
-  resolve(db);
+  resolve(db, db2);
 });
 
-Start.then((db) => {
+Start.then((db, db2) => {
   init_socketio();
 });
