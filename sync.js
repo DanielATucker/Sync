@@ -56,10 +56,18 @@ function init_socketio() {
       get_manifest(socket);
     });
 
-    socket.on("update_database", (update_command)=> {
+    socket.on("socket_update_database", (update_command)=> {
       console.log(`Update Command`);
 
-      update_database(update_command);
+      socket_update_database(update_command, io);
+    });
+
+    socket.on("server_update_database", (version) => {
+      server_update_database(version, socket);
+    });
+
+    socket.on("get_updates", (version) => {
+      get_updates(version, socket);
     });
 
   });
@@ -324,7 +332,7 @@ function create_database() {
   }
 };
 
-function update_database(update_command) {
+function socket_update_database(update_command, io) {
   let database_db = load_database();
 
   let version_list_in = database_db.prepare("SELECT * FROM database_version_list;").all();
@@ -350,7 +358,45 @@ function update_database(update_command) {
   database_db.close();
 
   console.log(`Sending version ${version} to all servers: ${JSON.stringify(update_command)}`);
+
+  io.to("main").emit("server_update_database", update_command);
 };
+
+function server_update_database(version, io) {
+  console.log(`Incoming server update: ${version}`);
+
+  let database_db = load_database();
+
+  let version_list_in = database_db.prepare("SELECT * FROM database_version_list;").all();
+
+  let last_version_in = version_list_in.slice(-1).pop();
+
+  if (last_version_in === version) {
+    console.log("Version match, not adding");
+  }
+  else {
+    socket.emit("get_updates", version);
+  };
+};
+
+function get_updates(version, socket) {
+  let database_db = load_database();
+  
+  let version_list_in = database_db.prepare("SELECT * FROM database_version_list;").all();
+
+  let last_version_in = version_list_in.slice(-1).pop();
+
+  console.log(`last version: ${last_version_in}`);
+  console.log(`version in: ${version}`);
+
+  console.log(`version list: ${version_list_in}`);
+
+  let update_num = version - last_version_in;
+
+  console.log(`Update num: ${update_num}`);
+};
+
+
 
 //Start
 

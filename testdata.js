@@ -31,7 +31,7 @@ function Start(serverIp) {
             "values": null
         };
 
-        socket.emit("update_database", update_command);
+        socket.emit("socket_update_database", update_command);
     });
 
     socket.io.on("error", (error) => {
