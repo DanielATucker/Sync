@@ -362,7 +362,7 @@ function socket_update_database(update_command, io) {
   io.to("main").emit("server_update_database", update_command);
 };
 
-function server_update_database(version, io) {
+function server_update_database(version, socket) {
   console.log(`Incoming server update: ${version}`);
 
   let database_db = load_database();
